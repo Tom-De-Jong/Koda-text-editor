@@ -1,2 +1,2 @@
-# Koda-text-editor
-Koda text editor is a simple texteditor made with tauri
+if you see this congrats you did it tom
+heya!

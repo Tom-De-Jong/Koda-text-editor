@@ -15,7 +15,7 @@ saveFile();
 //function for saving files
 function saveFile(){
 
-  let filepath = "/home/tom/Documents/Koda-text-editor/README.md" //temporary
+  let filepath = document.querySelector(".textarea").getAttribute("filepath");
   let text = document.querySelector(".textarea").value;
 
   invoke('save_text_file', { file_path: filepath, text: text })
@@ -34,16 +34,28 @@ function keydown(evt){
 
 }
 
+
+//save file as
+document.querySelector(".saveFileAs").addEventListener("click", () => {
+
+let text = document.querySelector(".textarea").value;
+
+invoke('save_text_file_as', { text: text })
+
+})
+
 //opens file from filepath
 document.querySelector(".openFile").addEventListener("click", () => {
   console.log("clicked");
 
-  let filepath = "/home/tom/Documents/Koda-text-editor/README.md" //temporary
-  invoke('get_text_file', { file_path: filepath }).then((message) => {
+  let filepath = "" //temporary
+  invoke('get_text_file').then((message) => {
     console.log(message)
+    let content = message.contents;
+    let filepath = message.filepath;
 
     // check how many lines there are and add them when opening file
-    let lines = message.split(/\n/);
+    let lines = content.split(/\n/);
     console.log(lines);
 
     gutterWrapper.innerHTML = "";
@@ -57,7 +69,8 @@ document.querySelector(".openFile").addEventListener("click", () => {
 
     }
 
-    textareaglobal.innerHTML = message;
+    textareaglobal.value = content;
+    textArea.setAttribute("filepath", filepath);
   });;
 
 
