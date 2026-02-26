@@ -4,7 +4,7 @@ use std::env;
 use std::fs;
 
 #[tauri::command(rename_all = "snake_case")]
-fn get_text_file(file_path: String){
+fn get_text_file(file_path: String) -> String{
 
     println!("In file {file_path}");
 
@@ -12,6 +12,7 @@ fn get_text_file(file_path: String){
         .expect("Should have been able to read the file");
 
     println!("With text:\n{contents}");
+    contents
 }
 
 

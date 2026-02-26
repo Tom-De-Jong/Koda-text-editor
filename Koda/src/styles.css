@@ -26,10 +26,16 @@
   }
 }
 
+body{
+  padding: 0;
+  margin: 0;
+}
+
 .textContainer{
   display: flex;
-  width: 100%;
+  width: calc(100% - 20px);
   min-height: 98vh;
+  margin: 10px;
 }
 
 .gutter{
@@ -64,3 +70,8 @@ overflow: scroll;
   margin-top: 1.5px;
 }
 
+.topBar{
+  height: 50px;
+  background-color: #0000001f;
+  width: 100%;
+}
