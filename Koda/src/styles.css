@@ -75,3 +75,21 @@ overflow: scroll;
   background-color: #0000001f;
   width: 100%;
 }
+
+.unlist{
+  display: flex;
+  align-items: center;
+  height: 100%;
+  list-style: none;
+  font-size: 20px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.unlistItem{
+  margin-left: 15px;
+}
+
+.unlistItem:hover{
+text-decoration: underline;
+}
