@@ -112,3 +112,25 @@ text-decoration: underline;
   display: block;
   min-height: calc(100vh - 70px);
 }
+
+.filetree{
+  width: 500px;
+  height: calc(100vh - 70px);
+  background-color: #0000001f;
+  margin-right: 10px;
+  overflow: scroll;
+}
+
+.dirTreeItem{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 15px;
+  margin: 10px;
+}
+
+.dirTreeItem:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
+

@@ -4,24 +4,84 @@ let gutterWrapper = document.querySelector(".gutterWrapper")
 let textareaglobal = document.querySelector(".textarea")
 let markdownPreview = document.querySelector(".markdownPreview")
 let markdownMode = false;
+let currentPath = "/home/tom";
 
 console.log("script works girly")
 
 
+
+//get all dirs and puts them in dirtree bar
+function parentPath(p) {
+  if (!p || p === "/") return "/";
+  return p.replace(/\/+$/, "").split("/").slice(0, -1).join("/") || "/";
+}
+
+function renderTree(entries) {
+  const fileTree = document.querySelector(".filetree");
+  fileTree.innerHTML = "";
+
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
+    let newDirItem = document.createElement("div");
+    newDirItem.className = "dirTreeItem";
+    newDirItem.innerHTML = entry.name;
+
+    //onclick directory or file open
+    newDirItem.addEventListener("click", (event) => {
+      if (entry.is_dir) {
+        const nextPath = entry.name === ".." ? parentPath(currentPath) : entry.path;
+
+        invoke("get_dirtree", { path: nextPath }).then((message) => {
+          currentPath = nextPath;
+          renderTree(message);
+        });
+      } else {
+        invoke("get_text_file_by_path", { path: entry.path }).then((message) => {
+          let content = message.contents || "";
+          let filepath = message.filepath || "";
+
+          let lines = content.split(/\n/);
+          gutterWrapper.innerHTML = "";
+
+          for (let i = 0; i < lines.length; i++) {
+            let newGutter = document.createElement("div")
+            newGutter.className = "gutter"
+            newGutter.innerHTML = (i + 1) + "."
+            gutterWrapper.appendChild(newGutter);
+          }
+
+          textareaglobal.value = content;
+          textArea.setAttribute("filepath", filepath);
+        });
+      }
+    })
+
+    fileTree.appendChild(newDirItem);
+  }
+}
+
+//get all dirs and puts them in dirtree bar
+invoke("get_dirtree_start").then((message) => {
+  console.log(message);
+  renderTree(message);
+})
+
+
+
 //saves the file to the path when topbar save button is clicked
 document.querySelector(".saveFile").addEventListener("click", () => {
-saveFile();
+  saveFile();
 })
 
 
 //function for saving files
-function saveFile(){
+function saveFile() {
 
   let filepath = document.querySelector(".textarea").getAttribute("filepath");
   let text = document.querySelector(".textarea").value;
 
   invoke('save_text_file', { file_path: filepath, text: text })
-  
+
 }
 
 // ctrl + thing functions
@@ -29,29 +89,29 @@ document.onkeydown = keydown;
 
 let zoomnumber = 1;
 
-function keydown(evt){
+function keydown(evt) {
   evt = evt || window.event;
 
-  if (evt.ctrlKey && evt.keyCode==83){ //CTRL+S
+  if (evt.ctrlKey && evt.keyCode == 83) { //CTRL+S
     saveFile();
-    alert("File saved"); 
+    alert("File saved");
 
-  } else if (evt.ctrlKey && (evt.keyCode==61 || evt.keyCode==187)){
+  } else if (evt.ctrlKey && (evt.keyCode == 61 || evt.keyCode == 187)) {
 
     if (zoomnumber <= 5) {
-    zoomnumber += 0.5;
-    document.querySelector(".textWrapper").style.zoom = zoomnumber;
-    console.log(zoomnumber);
-    //zoom in
+      zoomnumber += 0.5;
+      document.querySelector(".textWrapper").style.zoom = zoomnumber;
+      console.log(zoomnumber);
+      //zoom in
     }
 
-  } else if (evt.ctrlKey && (evt.keyCode==173 || evt.keyCode==189)){
-    
+  } else if (evt.ctrlKey && (evt.keyCode == 173 || evt.keyCode == 189)) {
+
     if (zoomnumber >= 1) {
-    zoomnumber -= 0.5;
-    document.querySelector(".textWrapper").style.zoom = zoomnumber;
-    console.log(zoomnumber);
-    //zoom out
+      zoomnumber -= 0.5;
+      document.querySelector(".textWrapper").style.zoom = zoomnumber;
+      console.log(zoomnumber);
+      //zoom out
     }
 
   }
@@ -62,9 +122,9 @@ function keydown(evt){
 //save file as
 document.querySelector(".saveFileAs").addEventListener("click", () => {
 
-let text = document.querySelector(".textarea").value;
+  let text = document.querySelector(".textarea").value;
 
-invoke('save_text_file_as', { text: text })
+  invoke('save_text_file_as', { text: text })
 
 })
 
@@ -100,6 +160,17 @@ document.querySelector(".openFile").addEventListener("click", () => {
 
 })
 
+//opens dirtree
+document.querySelector(".dirtree").addEventListener("click", () => {
+  if (document.querySelector(".filetree").style.display == "block") {
+    document.querySelector(".filetree").style.display = "none";
+  } else {
+    document.querySelector(".filetree").style.display = "block";
+  }
+
+});
+
+//turn on or off markdown
 document.querySelector(".switchMarkdown").addEventListener("click", () => {
   markdownMode = !markdownMode;
   if (markdownMode == true) {
