@@ -91,5 +91,9 @@ overflow: scroll;
 }
 
 .unlistItem:hover{
+  cursor: pointer;
+}
+
+.unlistItem:hover{
 text-decoration: underline;
 }
