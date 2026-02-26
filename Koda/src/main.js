@@ -5,6 +5,8 @@ let gutterWrapper = document.querySelector(".gutterWrapper")
 
 console.log("script works girly")
 
+invoke('get_text_file', { file_path: '/home/tom/Documents/Koda-text-editor/README.md'});
+
 let textArea = document.querySelector(".textarea");
 
 textArea.addEventListener("input", (event) => {
@@ -25,6 +27,5 @@ textArea.addEventListener("input", (event) => {
     gutterWrapper.appendChild(newGutter);
 
   }
-
 
 })
