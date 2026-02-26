@@ -171,4 +171,8 @@ textArea.addEventListener("input", (event) => {
 
   }
 
+  //wordcount
+  let wordCount = textArea.value.trim().split(/\s+/).filter(word => word.length > 0).length + " wrds";
+  document.querySelector(".wordCount").innerHTML = wordCount;
+
 })
