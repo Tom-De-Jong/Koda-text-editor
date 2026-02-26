@@ -5,27 +5,20 @@ use std::fs;
 use rfd::FileDialog;
 use serde_json::json;
 
-
-// old one
-// #[tauri::command(rename_all = "snake_case")]
-// fn get_text_file(file_path: String) -> String{
-
-//     println!("In file {file_path}");
-
-//     let contents = fs::read_to_string(file_path)
-//         .expect("Should have been able to read the file");
-
-//     println!("With text:\n{contents}");
-//     contents
-// }
-
-
+// open file
 #[tauri::command(rename_all = "snake_case")]
 fn get_text_file() -> serde_json::Value{
 
     let mut files = FileDialog::new()
-    .add_filter("text", &["txt", "rs"])
-    .add_filter("rust", &["rs", "toml"])
+    .add_filter(
+        "text",
+        &[
+            "txt", "md", "markdown", "log", "cfg", "ini", "json", "yml", "yaml",
+            "xml", "toml", "csv", "tsv", "js", "ts", "jsx", "tsx", "html", "htm",
+            "css", "scss", "less", "rs", "py", "rb", "java", "kt", "c", "h", "cpp",
+            "hpp", "cc", "go", "swift", "php", "sh", "bash", "zsh", "fish", "sql",
+        ],
+    )
     .set_directory("/")
     .pick_file();
 
@@ -38,12 +31,12 @@ fn get_text_file() -> serde_json::Value{
 
     let path_str = files.as_mut().unwrap().display().to_string();
 
-    println!("file maybe {:?}", files);
+    // println!("file maybe {:?}", files);
 
     let contents = fs::read_to_string(files.as_mut().unwrap().display().to_string())
         .expect("Should have been able to read the file");
 
-    println!("With text:\n{contents}");
+    // println!("With text:\n{contents}");
     let result = json!({
         "contents": contents,
         "filepath": path_str
@@ -54,29 +47,16 @@ fn get_text_file() -> serde_json::Value{
 }
 
 
-// old one
-// #[tauri::command(rename_all = "snake_case")]
-// fn save_text_file(file_path: String, text: String){
-
-//     println!("In file {file_path}");
-
-
-
-//     fs::write(&file_path, &text).expect("Should have been able to write the file");
-
-//     println!("wrote file successfully");
-// }
-
 //save file
 #[tauri::command(rename_all = "snake_case")]
 fn save_text_file(file_path: String, text: String){
 
-    println!("In file {file_path}");
+    // println!("In file {file_path}");
 
 
     fs::write(&file_path, &text).expect("Should have been able to write the file");
 
-    println!("wrote file successfully");
+    // println!("wrote file successfully");
 }
 
 
@@ -85,8 +65,15 @@ fn save_text_file(file_path: String, text: String){
 fn save_text_file_as(text: String){
 
     let mut save_dir = FileDialog::new()
-    .add_filter("text", &["txt", "rs"])
-    .add_filter("rust", &["rs", "toml"])
+    .add_filter(
+        "text",
+        &[
+            "txt", "md", "markdown", "log", "cfg", "ini", "json", "yml", "yaml",
+            "xml", "toml", "csv", "tsv", "js", "ts", "jsx", "tsx", "html", "htm",
+            "css", "scss", "less", "rs", "py", "rb", "java", "kt", "c", "h", "cpp",
+            "hpp", "cc", "go", "swift", "php", "sh", "bash", "zsh", "fish", "sql",
+        ],
+    )
     .set_directory("/")
     .save_file();
 

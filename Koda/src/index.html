@@ -15,22 +15,32 @@
       <li class="openFile unlistItem">Open file</li>
       <li class="saveFile unlistItem">Save file</li>
       <li class="saveFileAs unlistItem">Save file as</li>
+      <li class="switchMarkdown unlistItem">Markdown</li>
     </ul>
   </div>
 
-  <main class="textContainer">
+  <div class="window">
 
-    <div class="textWrapper">
+    <main class="textContainer">
 
-      <div class="gutterWrapper">
-        <div class="gutter">1.</div>
+      <div class="textWrapper">
+
+        <div class="gutterWrapper">
+          <div class="gutter">1.</div>
+        </div>
+
+        <textarea name="textarea" id="textarea" class="textarea" filepath=""></textarea>
+
       </div>
 
-      <textarea name="textarea" id="textarea" class="textarea" filepath=""></textarea>
+    </main>
 
+    <div class="markdownPreview" style="display: none;">
     </div>
 
-  </main>
+  </div>
+
+
 </body>
 
 </html>
